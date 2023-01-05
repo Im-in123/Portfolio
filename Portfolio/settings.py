@@ -26,9 +26,10 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# The value of the DEBUG will be True by default, but will only be False if the value of the DJANGO_DEBUG environment variable is set to False.
 # DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
-MY_LOCAL = True
-# ALLOWED_HOSTS = ['localhost', 'travonline.herokuapp.com']
+
+
 ALLOWED_HOSTS = ['*']
 
 # Application definition
@@ -90,29 +91,8 @@ db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
 
 # DATABASES = {
-# 'default': {
-
-#     'ENGINE': 'django.db.backends.postgresql',
-#     'NAME': '',
-#     'USER': '',
-#     'PASSWORD': '',
-#     'HOST': '',
-#     'PORT': '',
-# }
-# }
-# DATABASES = {
 #     "default": dj_database_url.config(default=DATABASE_URL, conn_max_age=1800),
 # }
-# DATABASES = {'default': dj_database_url.parse(DATABASE_URL)}
-
-# DATABASES = {
-#     'default': dj_database_url.config(
-#         default=DATABASE_URL,
-#         conn_max_age=500,
-#         conn_health_checks=True,
-#     )
-# }
-# DATABASES['default'].update(DATABASE_URL)
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -167,3 +147,6 @@ EMAIL_HOST_PASSWORD = os.environ.get('password')
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+# if not DEBUG:
+CSRF_TRUSTED_ORIGINS = ['https://travonline.up.railway.app']
