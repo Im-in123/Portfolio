@@ -11,21 +11,23 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-
-
+from dotenv import load_dotenv
+import dj_database_url
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '-!f0yc3$4$$=4@^%^us+(q=x!rjx2t17jr(bov=czhu0394n13'
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+# DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
+MY_LOCAL = True
 # ALLOWED_HOSTS = ['localhost', 'travonline.herokuapp.com']
 ALLOWED_HOSTS = ['*']
 
@@ -76,7 +78,7 @@ WSGI_APPLICATION = 'Portfolio.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
+DATABASE_URL = os.getenv("DATABASE_URL")
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -84,7 +86,33 @@ DATABASES = {
     }
 }
 
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
 
+# DATABASES = {
+# 'default': {
+
+#     'ENGINE': 'django.db.backends.postgresql',
+#     'NAME': '',
+#     'USER': '',
+#     'PASSWORD': '',
+#     'HOST': '',
+#     'PORT': '',
+# }
+# }
+# DATABASES = {
+#     "default": dj_database_url.config(default=DATABASE_URL, conn_max_age=1800),
+# }
+# DATABASES = {'default': dj_database_url.parse(DATABASE_URL)}
+
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default=DATABASE_URL,
+#         conn_max_age=500,
+#         conn_health_checks=True,
+#     )
+# }
+# DATABASES['default'].update(DATABASE_URL)
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -136,3 +164,6 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = os.environ.get('email')
 EMAIL_HOST_PASSWORD = os.environ.get('password')
+
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
